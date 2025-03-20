@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.*;
+import java.util.Collections.*;
+import java.io.*;
 
 public class AnagramSolver {
 
@@ -11,8 +14,33 @@ public class AnagramSolver {
      * @param filename
      * @return
      */
-    public static HashMap<String, ArrayList<String>> anagrams(String filename) {
-        return null;
+
+    public static String sort(String original) {
+        char[] temp = original.toCharArray();
+        Arrays.sort(temp);
+        String abc = new String(temp);
+        return abc;
+    }
+
+    public static HashMap<String, ArrayList<String>> anagrams(String filename) throws FileNotFoundException {
+        HashMap<String, ArrayList<String>> anagramMap = new HashMap<String, ArrayList<String>>();
+        Scanner scanner = new Scanner(new File(filename));
+        while( scanner.hasNextLine()){
+            String current = scanner.nextLine().trim();
+            String sorted = sort(current);
+
+            ArrayList<String> read;
+            read = anagramMap.get(sorted);
+            if(read == null){
+                read = new ArrayList<>();
+            }
+            read.add(current);
+            anagramMap.put(sorted, read);
+
+
+        }
+        scanner.close();
+        return anagramMap;
     }
 
     /**
@@ -22,7 +50,13 @@ public class AnagramSolver {
      * @return
      */
     public static ArrayList<String> mostFrequentAnagram(HashMap<String, ArrayList<String>> anagrams) {
-        return null;
+        ArrayList<String> longest = new ArrayList<>();
+        for (ArrayList<String> anagramList : anagrams.values()){
+            if (anagramList.size() > longest.size()){
+                longest = anagramList;
+            }
+        }
+        return longest;
     }
 
     /**
@@ -31,7 +65,8 @@ public class AnagramSolver {
      * @param anagrams
      */
     public static void printKeyValuePairs(HashMap<String, ArrayList<String>> anagrams) {
-
+        for (Map.Entry<String, ArrayList<String>> entry : anagrams.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
     }
-
 }
